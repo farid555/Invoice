@@ -3,16 +3,19 @@ import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
 
 const checkAuth = asyncHandler(async (req, res, next) => {
+
   let jwt_token;
 
   //Beare aadlkajkldjalkdlasdl
 
-  const authHeader = req.headers.authorization || req.headers.authorization;
-
-  if (!authHeader?.startsWith('Bearer')) return res.sendStatus(401);
+  const authHeader = req.headers.authorization || req.headers.Authorization;
+  
+  if (!authHeader?.startsWith('Bearer')) {
+    return res.sendStatus(401);
+  }
 
   if (authHeader && authHeader.startsWith('Bearer')) {
-    jwt_token = authHeader.split('')[1];
+    jwt_token = authHeader.split(' ')[1];
 
     jwt.verify(
       jwt_token,

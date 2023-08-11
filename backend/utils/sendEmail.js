@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import fs from 'fs';
 import handlebars from 'handlebars';
+import path from 'path';
 import { fileURLToPath } from 'url';
 import transporter from '../helpers/emailTransport.js';
 import { systemLogs } from './Logger.js';
@@ -14,14 +15,17 @@ const sendEmail = async (email, subject, payload, template) => {
       path.join(__dirname, template),
       'utf8'
     );
-    const compiledTemplate = handlebars.complie(sourceDirectory);
+
+    const compiledTemplate = handlebars.compile(sourceDirectory);
+
     const emailOptions = {
       from: process.env.SENDER_EMAIL,
       to: email,
-      subject: suject,
+      subject: subject,
       html: compiledTemplate(payload),
     };
-    await transporter.sendEmail(emailOptions);
+
+    await transporter.sendMail(emailOptions);
   } catch (error) {
     systemLogs.error(`email not sent: ${error}`);
   }

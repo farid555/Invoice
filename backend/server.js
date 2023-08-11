@@ -7,6 +7,7 @@ import connectionToDB from './config/connectDB.js';
 import { morganMiddleware, systemLogs } from './utils/Logger.js';
 import mongoSanitize from 'express-mongo-sanitize';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
+import authRoutes from './routes/authRoutes.js';
 
 await connectionToDB();
 
@@ -28,6 +29,8 @@ app.get('/api/v1/test', (req, res) => {
   res.json({ Hi: 'Welcome to the Invoice App' });
 });
 
+app.use('/api/v1/auth', authRoutes);
+
 app.use(notFound);
 app.use(errorHandler);
 
@@ -37,7 +40,7 @@ app.listen(PORT, () => {
   console.log(
     `${chalk.green.bold('✔')} 👍 Server running is ${chalk.yellow.bold(
       process.env.NODE_ENV
-    )} mode on port ${chalk.green.bold(PORT)}...`
+    )} mode on port ${chalk.green.bold(PORT)}`
   );
   systemLogs.info(
     `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`

@@ -2,14 +2,14 @@ import rateLimit from "express-rate-limit";
 import {systemLogs} from "../utils/Logger.js"
 
 export const apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    mxa: 100,
+    windowMs: 15*60*1000,
+    max: 100,
     message: {
-        message: message: "Too many requests from this IP address, please try again after 15 minutes"
+        message: "Too many requests from this IP address, please try again after 15 minutes"
     },
-    handler:(req, res, next, options)=>{
-        systemLogs.error(`Too many requests: ${options.message.message}\t${req.method}${req.url}\t${req.headers.origin} `)
 
+    handler:(req, res, next, options)=>{
+        systemLogs.error(`Too many requests: ${options.message.message}\t${req.method}\t${req.url}\t${req.headers.origin} `)
         res.status(options.statusCode).send(options.message)
         
     }
@@ -20,13 +20,12 @@ export const apiLimiter = rateLimit({
 
 export const loginLimiter = rateLimit({
     windowMs: 30 * 60 * 1000,
-    mxa: 20,
+    max: 20,
     message: {
-        message: message: "Too many requests from this IP address, please try again after 30 minutes"
+        message: "Too many requests from this IP address, please try again after 30 minutes"
     },
     handler:(req, res, next, options)=>{
         systemLogs.error(`Too many requests: ${options.message.message}\t${req.method}${req.url}\t${req.headers.origin} `)
-
         res.status(options.statusCode).send(options.message)
         
     }

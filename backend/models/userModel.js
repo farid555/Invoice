@@ -2,145 +2,148 @@ import bcrypt from 'bcryptjs';
 import 'dotenv/config';
 import mongoose from 'mongoose';
 import validator from 'validator';
-import { USER } from '../constants/index';
+import { USER } from '../constants/index.js';
 
 const { Schema } = mongoose;
 
+const userSchema = new Schema(
+  {
+    email: {
+      type: String,
+      lowercase: true,
+      uniqe: true,
+      required: true,
+      validate: [validator.isEmail, 'Please provide a valid email'],
+    },
 
-    const userSchema = new Schema({
-  email: {
-    type: String,
-    lowercase: true,
-    required: true,
-    validate: [validator.isEmail, 'Please provide a valid email'],
-  },
-
-  username: {
-    type: String,
-    required: true,
-    uniqe: true,
-    trim: true,
-    validate: {
-      validator: function (value) {
-        return /^[A-z][A-z0-9-_]{3,23}$/.test(value);
+    username: {
+      type: String,
+      required: true,
+      uniqe: true,
+      trim: true,
+      validate: {
+        validator: function (value) {
+          return /^[A-z][A-z0-9-_]{3,23}$/.test(value);
+        },
+        message:
+          'username must be alphanumeric, without special characters, Hyphens and underscores allowed',
       },
-      message:
-        'username must be alphanumeric, without special characters, Hyphens and underscores allowed',
     },
-  },
 
-  firstname:{
-    type: string,
-    required: true,
-    trim: true,
-    validate:[
-        validator.isAlphanumeric, "First Name can only have Alphanumeric values. No special characters allowed"
-    ]
-  },
-
-  lastname:{
-    type:: string,
-    required: true,
-    trim: true,
-    validate:[
-        validator.isAlphanumeric, "Last Name can only have Alphanumeric values. No special characters allowed"
-    ]
-  },
-
-  password:{
-    type:String,
-    select:false,
-    validate:[
-        validator.isStrongPassword, "Password must be at least 8 characters long, with at least 1 uppercase and lowercase letters and at least 1 symbol"
-    ]
-  },
-  passwordConfirm:{
-    type: String,
-    validate: {
-        validator: function (value){
-            return value === this.password
-        }
-        message:"Passwords do not match,"
+    firstName: {
+      type: String,
+      required: true,
+      trim: true,
+      validate: [
+        validator.isAlphanumeric,
+        'First Name can only have Alphanumeric values. No special characters allowed',
+      ],
     },
-  },
 
-  isEmailVerified:{
-    type: Boolean, 
-    required:true, 
-    default:false
-},
-  
-  provider: {
-    type: String,
-    required:true,
-    default: "email"
-  },
+    lastName: {
+      type: String,
+      required: true,
+      trim: true,
+      validate: [
+        validator.isAlphanumeric,
+        'Last Name can only have Alphanumeric values. No special characters allowed',
+      ],
+    },
 
-  googleID: String,
-  avatar: String,
-  businessName: String,
-  phoneNumber:{
-    type: String,
-    default: "+358401525662",
-    validate:[
-        validtor.isMobilePhone,
-        "Your mobile phone number must begin a '+', followed by your country code then actual number +358401525662 "
-    ]
-   
-  },
-  address: String,
-  city: String,
-  country: String,
-  passwordChangedAt: Date,
+    password: {
+      type: String,
+      select: false,
+      validate: [
+        validator.isStrongPassword,
+        'Password must be at least 8 characters long, with at least 1 uppercase and lowercase letters and at least 1 symbol',
+      ],
+    },
 
-  roles:{
-    type: [String],
-    default: [USER]
+    passwordConfirm: {
+      type: String,
+      validate: {
+        validator: function (value) {
+          return value === this.password;
+        },
+        message: 'Passwords do not match',
+      },
+    },
 
-  },
+    isEmailVerified: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
 
-  active:{
-    type: Boolean,
-    default:true 
+    provider: {
+      type: String,
+      required: true,
+      default: 'email',
+    },
+
+    googleID: String,
+    avatar: String,
+    businessName: String,
+    phoneNumber: {
+      type: String,
+      default: '+358401525662',
+      validate: [
+        validator.isMobilePhone,
+        "Your mobile phone number must begin a '+', followed by your country code then actual number +358401525662 ",
+      ],
+    },
+    address: String,
+    city: String,
+    country: String,
+    passwordChangedAt: Date,
+
+    roles: {
+      type: [String],
+      default: [USER],
+    },
+
+    active: {
+      type: Boolean,
+      default: true,
+    },
+    refreshToken: [String],
   },
-  refreshToken:[String],
-}, {
+  {
     timestamps: true,
-    }
+  }
 );
 
+userSchema.pre('save', async function (next) {
+  if (this.roles.length === 0) {
+    this.roles.push(USER);
+    next();
+  }
+});
 
-userSchema.pre("save", async function (next){
-    if(this.roles.length === 0){
-        this.roles.push(USER)
-        next()
-    }
-})
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    return next();
+  }
 
-userSchema.pre("save", async function (next){
-    if(!this.isModified("password")){
-        return next()
-    }
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  this.passwordConfirmd = undefined;
+  next();
+});
 
-    const salt = await bcrypt.genSalt(10)
-    this.password = await bcrypt.hash(this.password, salt)
-    this.passwordConfirmd = undefined
-    next()
-})  
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password') || this.isNew) {
+    return next();
+  }
 
-userSchema.pre("save", async function (next){
-    if(!this.isModified("password") || this.isNew){
-        return next()
-    }
+  this.passwordChangedAt = Date.now();
+  next();
+});
 
-    this.passwordChangedAt = Date.now()
-    next()
-})
+userSchema.methods.comparePassword = async function (givenPassword) {
+  return await bcrypt.compare(givenPassword, this.password);
+};
 
-userSchema.methods.comparePassword = async function(givenPassword){
-    return await bcrypt.compare(givenPassword, this.password)
-}
-
-const User = mongoose.model("User", userSchema)
+const User = mongoose.model('User', userSchema);
 
 export default User;
