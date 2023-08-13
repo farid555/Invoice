@@ -11,7 +11,7 @@ const userSchema = new Schema(
     email: {
       type: String,
       lowercase: true,
-      uniqe: true,
+      unique: true,
       required: true,
       validate: [validator.isEmail, 'Please provide a valid email'],
     },
@@ -19,14 +19,14 @@ const userSchema = new Schema(
     username: {
       type: String,
       required: true,
-      uniqe: true,
+      unique: true,
       trim: true,
       validate: {
         validator: function (value) {
           return /^[A-z][A-z0-9-_]{3,23}$/.test(value);
         },
         message:
-          'username must be alphanumeric, without special characters, Hyphens and underscores allowed',
+          'Username must be alphanumeric, without special characters, Hyphens and underscores allowed',
       },
     },
 
@@ -65,7 +65,7 @@ const userSchema = new Schema(
         validator: function (value) {
           return value === this.password;
         },
-        message: 'Passwords do not match',
+        message: 'Password do not match',
       },
     },
 
@@ -92,6 +92,7 @@ const userSchema = new Schema(
         "Your mobile phone number must begin a '+', followed by your country code then actual number +358401525662 ",
       ],
     },
+
     address: String,
     city: String,
     country: String,
@@ -106,6 +107,7 @@ const userSchema = new Schema(
       type: Boolean,
       default: true,
     },
+
     refreshToken: [String],
   },
   {
@@ -127,7 +129,7 @@ userSchema.pre('save', async function (next) {
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
-  this.passwordConfirmd = undefined;
+  this.passwordConfirm = undefined;
   next();
 });
 

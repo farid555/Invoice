@@ -3,12 +3,11 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const verifyResetTokenSchema = new Schema({
-  _userId: [{
+  _userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
- 
-  }],
+  },
 
   token: {
     type: String,
