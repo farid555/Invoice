@@ -2,6 +2,8 @@ import asyncHandler from 'express-async-handler';
 import User from '../../models/userModel.js';
 import VerificationToken from '../../models/verifyResetTokenModel.js';
 import sendEmail from '../../utils/sendEmail.js';
+import { systemLogs } from '../../utils/Logger.js';
+
 
 const domainURL = process.env.DOMAIN;
 
@@ -13,6 +15,7 @@ const verifyUserEmail = asyncHandler(async (req, res) => {
   const user = await User.findOne({ _id: req.params.userId }).select(
     '-passwordConfirm'
   );
+  systemLogs.error(`${user}`);
 
   if (!user) {
     res.status(400);
@@ -27,6 +30,8 @@ const verifyUserEmail = asyncHandler(async (req, res) => {
     _userId: user._id,
     token: req.params.emailToken,
   });
+  
+
 
   if (!userToken) {
     res.status(400);

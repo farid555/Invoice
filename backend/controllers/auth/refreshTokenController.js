@@ -1,11 +1,13 @@
 import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 import User from '../../models/userModel.js';
+import { systemLogs } from '../../utils/Logger.js';
 
 // $-title GET new access tokens from the refresh token
 // $-path  GET /api/v1/auth/new_access_token
 // $-auth  Public
-// we are rotating the refresh tokens, deleting the old ones, creating new ones and detecting token reuse
+// we are rotating the refresh tokens, deleting the old ones,
+// creating new ones and detecting token reuse
 
 const newAccessToken = asyncHandler(async (req, res) => {
   const cookies = req.cookies;
@@ -44,9 +46,11 @@ const newAccessToken = asyncHandler(async (req, res) => {
     return res.sendStatus(403);
   }
 
+
   const newRefreshTokenArray = existingUser.refreshToken.filter(
     (refT) => refT != refreshToken
   );
+  
 
   jwt.verify(
     refreshToken,
@@ -67,7 +71,7 @@ const newAccessToken = asyncHandler(async (req, res) => {
           roles: existingUser.roles,
         },
         process.env.JWT_ACCESS_SECRET_KEY,
-        { expiresIn: '1h' }
+        { expiresIn: '10h' }
       );
 
       const newRefreshToken = jwt.sign(

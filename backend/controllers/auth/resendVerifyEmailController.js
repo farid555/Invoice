@@ -2,6 +2,8 @@ import asyncHandler from 'express-async-handler';
 import User from '../../models/userModel.js';
 import VerificationToken from '../../models/verifyResetTokenModel.js';
 import sendEmail from '../../utils/sendEmail.js';
+import { systemLogs } from '../../utils/Logger.js';
+
 
 const domainURL = process.env.DOMAIN;
 const { randomBytes } = await import('crypto');
@@ -33,6 +35,9 @@ const resendEmailVerificationToken = asyncHandler(async (req, res) => {
   let verificationToken = await VerificationToken.findOne({
     _userId: user._id,
   });
+
+  
+ 
 
   if (verificationToken) {
     await VerificationToken.deleteOne();

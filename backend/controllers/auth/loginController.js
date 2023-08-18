@@ -10,16 +10,26 @@ import { systemLogs } from '../../utils/Logger.js';
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
+  if (!email) {
+    res.status(400);
+    throw new Error('Please provide an email and password');
+  }
+  if (!password) {
     res.status(400);
     throw new Error('Please provide an email and password');
   }
 
   const existingUser = await User.findOne({ email }).select('+password');
 
+  if (!existingUser) {
+    res.status(401);
+    systemLogs.error('Incorrect email or password');
+    throw new Error('Incorrect email or password');
+  }
+
   const comparepass = await existingUser.comparePassword(password);
 
-  if (!existingUser || !comparepass) {
+  if ( !comparepass) {
     res.status(401);
     systemLogs.error('Incorrect email or password');
     throw new Error('Incorrect email or password');
@@ -46,7 +56,7 @@ const loginUser = asyncHandler(async (req, res) => {
         roles: existingUser.roles,
       },
       process.env.JWT_ACCESS_SECRET_KEY,
-      { expiresIn: '1h' }
+      { expiresIn: '10h' }
     );
 
     const newRefreshToken = jwt.sign(
@@ -54,7 +64,7 @@ const loginUser = asyncHandler(async (req, res) => {
         id: existingUser._id,
       },
       process.env.JWT_REFRESH_SECRET_KEY,
-      { expiresIn: '1d' }
+      { expiresIn: '10d' }
     );
 
     const cookies = req.cookies;
@@ -62,6 +72,8 @@ const loginUser = asyncHandler(async (req, res) => {
     let newRefreshTokenArray = !cookies?.jwt
       ? existingUser.refreshToken
       : existingUser.refreshToken.filter((reft) => reft != cookies.jwt);
+
+  
 
     if (cookies?.jwt) {
       const refreshToken = cookies.jwt;
@@ -83,7 +95,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     existingUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
 
-    await existingUser.save();
+    existingUser.save();
 
     const options = {
       httpOnly: true,

@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler';
 import User from '../../models/userModel.js';
 import VerificationToken from '../../models/verifyResetTokenModel.js';
 import sendEmail from '../../utils/sendEmail.js';
+import { systemLogs } from '../../utils/Logger.js';
 
 const domainURL = process.env.DOMAIN;
 
@@ -64,13 +65,15 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   if (registeredUser) {
-    const verification_Token = randomBytes(32).toString('hex');
+    const verificationToken = randomBytes(32).toString('hex');
 
     let emailVerificationToken = await new VerificationToken({
       _userId: registeredUser._id,
-      token: verification_Token,
+      token: verificationToken,
     }).save();
 
+    
+   
     const emailLink = `${domainURL}/api/v1/auth/verify/${emailVerificationToken.token}/${registeredUser._id}`;
 
 
