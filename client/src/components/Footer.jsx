@@ -18,9 +18,8 @@ const Footer = () => {
   return (
     <Box
       sx={{
-        position: 'fixed',
-        bottom: 0,
-        width: '100%',
+        bgColor: '#000000',
+        marginTop: 'auto',
       }}
     >
       <CssBaseline />
