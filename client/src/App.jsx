@@ -10,6 +10,8 @@ import NotFound from './components/NotFound';
 import { customTheme } from './customTheme.js';
 import useTitle from './hooks/useTitle';
 import HomePage from './pages/HomePage';
+import RegisterPage from './features/auth/pages/RegisterPage';
+import VerifiedPage from './features/auth/pages/VerifiedPage';
 
 const App = () => {
   useTitle('MERN Invoice - Home');
@@ -18,10 +20,11 @@ const App = () => {
     <ThemeProvider theme={customTheme}>
       <CssBaseline />
       <Routes>
-        <Route path="/" element={<Layout />}></Route>
-        <Route index element={<HomePage />}></Route>
-
-        <Route path="*" element={<NotFound />}></Route>
+        <Route path="/" element={<Layout />} />
+        <Route index element={<HomePage />} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route path="auth/verify" element={<VerifiedPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
       <ToastContainer theme="dark" />

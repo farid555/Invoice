@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const user = JSON.parse(localStorage.getItem('User'));
+const user = JSON.parse(localStorage.getItem('user'));
 
 const initialState = {
   user: user ? user : null,
@@ -12,4 +12,4 @@ const authSlice = createSlice({
   reducers: {},
 });
 
-export default authSlice.reducers;
+export default authSlice.reducer;
