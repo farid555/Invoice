@@ -11,6 +11,10 @@
   "author": "farid555",
   "license": "MIT",
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.6",
+    "@mui/material": "^5.14.6",
     "bcryptjs": "^2.4.3",
     "chalk": "^5.3.0",
     "cookie-parser": "^1.4.6",
