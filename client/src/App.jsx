@@ -16,8 +16,12 @@ import RegisterPage from './features/auth/pages/RegisterPage';
 import VerifiedPage from './features/auth/pages/VerifiedPage';
 import LoginPage from './features/auth/pages/LoginPage';
 import ResendEmailTokenPage from './features/auth/pages/ResendEmailTokenPage';
-import PasswordResetPage from "./features/auth/pages/PasswordResetPage"
+import PasswordResetPage from './features/auth/pages/PasswordResetPage';
 import PasswordResetRequestPage from './features/auth/pages/PasswordResetRequestPage';
+import { ROLES } from './config/roles';
+import UsersList from './features/users/pages/UsersListPage';
+import DashboardPage from './pages/DashboardPage';
+import AuthRequired from './components/AuthRequired';
 
 const App = () => {
   useTitle('MERN Invoice - Home');
@@ -26,6 +30,7 @@ const App = () => {
   return (
     <ThemeProvider theme={customTheme}>
       <CssBaseline />
+      {/*Public Route*/}
       {user && <Navbar />}
       <Routes>
         <Route path="/" element={<Layout />} />
@@ -34,8 +39,22 @@ const App = () => {
         <Route path="auth/verify" element={<VerifiedPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="resend" element={<ResendEmailTokenPage />} />
-        <Route path="reset_password_request"  element={<PasswordResetRequestPage />}/>
+        <Route
+          path="reset_password_request"
+          element={<PasswordResetRequestPage />}
+        />
         <Route path="auth/reset_password" element={<PasswordResetPage />} />
+        {/*Private Route*/}
+
+        <Route element={<AuthRequired allowedRoles={[ROLES.User]} />}>
+          <Route path="dashboard" element={<DashboardPage />} />
+        </Route>
+
+        {/*Private Route - Admin Users only*/}
+        <Route element={<AuthRequired allowedRoles={[ROLES.Admin]} />}>
+          <Route path="users" element={<UsersList />} />
+        </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
