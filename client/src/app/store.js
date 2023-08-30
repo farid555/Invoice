@@ -8,8 +8,8 @@ export const store = configureStore({
     auth: authReducer,
   },
 
-  middlware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(baseApiSlice.middlware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(baseApiSlice.middleware),
   //TODO: change this to false in production
   devTools: true,
 });

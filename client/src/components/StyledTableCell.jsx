@@ -1,11 +1,11 @@
-import { styled, TableCell, tebleCellClasses } from '@mui/material';
+import { styled, TableCell, tableCellClasses } from '@mui/material';
 
 const TableCellStyled = styled(TableCell)(({ theme }) => ({
-  [`&.${tebleCellClasses.head}`]: {
+  [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
   },
-  [`&.${tebleCellClasses.body}`]: {
+  [`&.${tableCellClasses.body}`]: {
     fontSize: 15,
   },
 }));

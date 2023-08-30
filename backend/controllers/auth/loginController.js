@@ -56,7 +56,7 @@ const loginUser = asyncHandler(async (req, res) => {
         roles: existingUser.roles,
       },
       process.env.JWT_ACCESS_SECRET_KEY,
-      { expiresIn: '10h' }
+      { expiresIn: '10m' }
     );
 
     const newRefreshToken = jwt.sign(
@@ -64,7 +64,7 @@ const loginUser = asyncHandler(async (req, res) => {
         id: existingUser._id,
       },
       process.env.JWT_REFRESH_SECRET_KEY,
-      { expiresIn: '10d' }
+      { expiresIn: '1d' }
     );
 
     const cookies = req.cookies;

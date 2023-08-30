@@ -46,11 +46,9 @@ const newAccessToken = asyncHandler(async (req, res) => {
     return res.sendStatus(403);
   }
 
-
   const newRefreshTokenArray = existingUser.refreshToken.filter(
     (refT) => refT != refreshToken
   );
-  
 
   jwt.verify(
     refreshToken,
@@ -71,7 +69,7 @@ const newAccessToken = asyncHandler(async (req, res) => {
           roles: existingUser.roles,
         },
         process.env.JWT_ACCESS_SECRET_KEY,
-        { expiresIn: '10h' }
+        { expiresIn: '10m' }
       );
 
       const newRefreshToken = jwt.sign(
