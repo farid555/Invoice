@@ -5,7 +5,7 @@ import { FaMoneyBillWave } from 'react-icons/fa';
 function Copyright() {
   return (
     <Typography variant="body2" align="center" sx={{ color: '#ffffff' }}>
-      {'Copyright ©'}
+      {'Copyright © '}
       <Link color="inherit" href="https://github.com/API_Imperfect">
         MERN Invoice
       </Link>
@@ -18,7 +18,7 @@ const Footer = () => {
   return (
     <Box
       sx={{
-        bgColor: '#000000',
+        background: '#000000',
         marginTop: 'auto',
       }}
     >
@@ -29,7 +29,7 @@ const Footer = () => {
           py: 1,
           px: 1,
           mt: 'auto',
-          bgColor: '#000000',
+          background: '#000000',
         }}
       >
         <Typography

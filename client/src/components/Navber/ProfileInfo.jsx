@@ -169,7 +169,7 @@ const ProfileInfo = ({ user }) => {
                     {user.avatar ? (
                       <Stack
                         direction="row"
-                        spacing={1.25}
+                        spacing={1}
                         alignItems="center"
                         sx={{ p: 0.5 }}
                       >
@@ -193,7 +193,7 @@ const ProfileInfo = ({ user }) => {
                     ) : (
                       <Stack
                         direction="row"
-                        spacing={1.25}
+                        spacing={1}
                         alignItems="center"
                         sx={{ p: 0.5 }}
                       >
@@ -205,7 +205,7 @@ const ProfileInfo = ({ user }) => {
                           {user.username.charAt(0).toUpperCase()}
                         </Avatar>
                         <Stack>
-                          <Typography variant="h6">
+                          <Typography variant="h8">
                             {user.firstName} {user.lastName}
                           </Typography>
                           <Typography variant="body2" color="#CFD8DC">
