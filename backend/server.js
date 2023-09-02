@@ -12,11 +12,11 @@ import userRoutes from './routes/userRoutes.js';
 import { apiLimiter } from './middleware/apiLimiter.js';
 import passport from 'passport';
 import googleAuth from './config/passportSetup.js';
+import customerRoutes from './routes/customerRoutes.js';
 
 await connectionToDB();
 
 const app = express();
-
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -38,6 +38,7 @@ app.get('/api/v1/test', (req, res) => {
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/user', apiLimiter, userRoutes);
+app.use('/api/v1/customer', apiLimiter, customerRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
