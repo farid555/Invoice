@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import validator from 'validator';
 
 const { randomBytes } = await import('crypto');
+
 const { Schema } = mongoose;
 
 const customerSchema = new Schema(
