@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 
 const { randomBytes } = await import('crypto');
 
+const { Schema } = mongoose;
+
 const paymentSchema = new Schema(
   {
     paidBy: String,
@@ -9,11 +11,11 @@ const paymentSchema = new Schema(
     amountPaid: Number,
     paymentMethod: {
       type: String,
-      default: 'CASH',
+      default: 'Cash',
       enum: [
         'Cash',
         'Mobile Money',
-        'Paypal',
+        'PayPal',
         'Credit Card',
         'Bank Transfer',
         'Others',
@@ -33,7 +35,6 @@ const documentSchema = new Schema(
       required: true,
       ref: 'User',
     },
-
     customer: {
       name: String,
       email: String,
@@ -44,39 +45,35 @@ const documentSchema = new Schema(
       country: String,
       phoneNumber: String,
     },
-
     documentType: {
       type: String,
-      default: 'invoice',
+      default: 'Invoice',
       enum: ['Invoice', 'Receipt', 'Quotation'],
     },
     documentNumber: String,
-    duDate: Date,
+    dueDate: Date,
     additionalInfo: String,
     termsConditions: String,
     status: {
       type: String,
       default: 'Not Paid',
-      enum: ['Paid', 'Not FullyPaid', 'Not Paid'],
+      enum: ['Paid', 'Not Fully Paid', 'Not Paid'],
     },
-
     subTotal: Number,
     salesTax: Number,
     rates: String,
     total: Number,
     currency: String,
     totalAmountReceived: Number,
-
     billingItems: [
       {
         itemName: String,
-        uniPrice: Number,
+        unitPrice: Number,
         quantity: Number,
         discount: String,
       },
     ],
-
-    paymentRecords: true,
+    paymentRecords: [paymentSchema],
   },
   {
     timestamps: true,
@@ -84,7 +81,7 @@ const documentSchema = new Schema(
 );
 
 documentSchema.pre('save', async function (next) {
-  this.documentNumber = `${new Date().getFullYear()}-${new Date().toLocalString(
+  this.documentNumber = `${new Date().getFullYear()}-${new Date().toLocaleString(
     'default',
     { month: 'long' }
   )}-${randomBytes(3).toString('hex').toUpperCase()}`;
