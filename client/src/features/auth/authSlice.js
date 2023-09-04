@@ -4,10 +4,10 @@ import  {decodeToken}  from 'react-jwt';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const googleToken = localStorage.getItem('googleToken');
-console.log(googleToken, user);
+
 
 const decodedToken = decodeToken (googleToken);
-console.log(decodedToken, user);
+
 
 const initialState = {
   user: user ? user : decodedToken,

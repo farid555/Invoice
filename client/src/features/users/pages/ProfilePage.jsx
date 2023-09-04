@@ -26,7 +26,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -59,7 +58,8 @@ function capitalizeFirstLetter(string) {
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { data, error, isLoading, isError } = useGetUserProfileQuery();
-  console.log(data);
+  
+
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
@@ -282,7 +282,7 @@ const ProfilePage = () => {
                 startIcon={<PersonRemoveAlt1Icon sx={{ color: 'white' }} />}
                 onClick={handleOpen}
               >
-                <Typography variant="h5" sx={{ color: 'white' }}>
+                <Typography variant="h5" sx={{ color: 'main' }}>
                   Delete Account?
                 </Typography>
               </Button>
@@ -302,12 +302,12 @@ const ProfilePage = () => {
               </Typography>
               <Button
                 id="modal-modal-description"
-                sx={{ mt: 2 }}
+                sx={{ mt: 2}}
                 fullWidth
                 variant="contained"
-                color="darkRed"
+                color="error"
                 size="large"
-                endIcon={<DeleteForeverIcon sx={{ color: 'white' }} />}
+                endIcon={<DeleteForeverIcon sx={{ color: 'red' }} />}
                 onClick={deleteHandler}
               >
                 <Typography variant="h5" sx={{ color: 'white' }}>

@@ -64,9 +64,9 @@ const ProfileInfo = ({ user }) => {
     if (isSuccess) {
       const message = data?.message;
       toast.success(message);
+      console.log(message);
     }
   }, [isSuccess, data]);
-
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
       <ButtonBase
@@ -169,7 +169,7 @@ const ProfileInfo = ({ user }) => {
                     {user.avatar ? (
                       <Stack
                         direction="row"
-                        spacing={1}
+                        spacing={1.25}
                         alignItems="center"
                         sx={{ p: 0.5 }}
                       >
@@ -193,7 +193,7 @@ const ProfileInfo = ({ user }) => {
                     ) : (
                       <Stack
                         direction="row"
-                        spacing={1}
+                        spacing={1.25}
                         alignItems="center"
                         sx={{ p: 0.5 }}
                       >
@@ -203,9 +203,10 @@ const ProfileInfo = ({ user }) => {
                           }}
                         >
                           {user.username.charAt(0).toUpperCase()}
+                          {console.log(user.username)}
                         </Avatar>
                         <Stack>
-                          <Typography variant="h8">
+                          <Typography variant="h6">
                             {user.firstName} {user.lastName}
                           </Typography>
                           <Typography variant="body2" color="#CFD8DC">
@@ -225,7 +226,7 @@ const ProfileInfo = ({ user }) => {
                   <Stack direction="row" alignItems="center" spacing={2}>
                     <ListItemIcon>
                       <SentimentSatisfiedAltTwoToneIcon
-                        color="indigo"
+                        color="blue"
                         sx={{ fontSize: 45 }}
                       />
                     </ListItemIcon>
@@ -239,7 +240,7 @@ const ProfileInfo = ({ user }) => {
                 <Grid item>
                   <Stack direction="row" alignItems="center" spacing={2}>
                     <ListItemIcon>
-                      <SpeedTwoToneIcon color="indigo" sx={{ fontSize: 45 }} />
+                      <SpeedTwoToneIcon color="yellow" sx={{ fontSize: 45 }} />
                     </ListItemIcon>
                     <Typography variant="h6">Dashboard</Typography>
                   </Stack>

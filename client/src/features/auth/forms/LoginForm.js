@@ -46,6 +46,8 @@ const LoginForm = () => {
 
   const [loginUser, { data, isLoading, isSuccess }] = useLoginUserMutation();
 
+  console.log(data);
+
   useEffect(() => {
     if (isSuccess) {
       navigate(from, { replace: true });
