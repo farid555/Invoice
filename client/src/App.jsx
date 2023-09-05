@@ -28,6 +28,8 @@ import CustomerEditForm from './features/customers/pages/CustomerEditForm';
 import CustomersPage from './features/customers/pages/CustomersPage';
 import SingleCustomerPage from './features/customers/pages/SingleCustomerPage';
 import CustomerCreateForm from './features/customers/pages/CustomerCreateForm';
+import DocCreateEditForm from './features/documents/pages/DocCreateEditForm';
+import DocumentsPage from './features/documents/pages/DocumentsPage';
 
 const App = () => {
   useTitle('MERN Invoice - Home');
@@ -64,6 +66,8 @@ const App = () => {
             element={<SingleCustomerPage />}
           />
           <Route path="sedit-customer/:custId" element={<CustomerEditForm />} />
+          <Route path="documents" element={<DocumentsPage />} />
+          <Route path="create-doc" element={<DocCreateEditForm />} />
         </Route>
 
         {/*Private Route - Admin Users only*/}
