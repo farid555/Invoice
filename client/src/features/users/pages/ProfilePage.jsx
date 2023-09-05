@@ -58,7 +58,7 @@ function capitalizeFirstLetter(string) {
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { data, error, isLoading, isError } = useGetUserProfileQuery();
-  
+
 
   const dispatch = useDispatch();
 

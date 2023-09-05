@@ -5,6 +5,12 @@ import getAllUserDocuments from '../controllers/documents/getAllUserDocuments.js
 import getSingleUserDocument from '../controllers/documents/getSingleUserDocument.js';
 import updateDocument from '../controllers/documents/updateDocument.js';
 import checkAuth from '../middleware/checkAuthMiddleware.js';
+import createDocumentPayment from '../controllers/documents/createDocument.js';
+import {
+  generatePDF,
+  getPDF,
+  sendDocument,
+} from '../controllers/documents/generatePDF.js';
 
 const router = express.Router();
 
@@ -20,5 +26,15 @@ router
   .get(checkAuth, getSingleUserDocument)
   .patch(checkAuth, updateDocument)
   .delete(checkAuth, deleteDocument);
+
+//generate PDF document at /api/v1/document/generate-pdf
+router.route('/generate-pdf').post(generatePDF);
+
+//get PDF at /api/v1/document/get-pdf
+router.route('/get-pdf').get(getPDF);
+
+//send email with pdf at /api/v1/document/send-document
+router.route('/send-pdf').post(sendDocument);
+
 
 export default router;

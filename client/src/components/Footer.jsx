@@ -21,6 +21,7 @@ const Footer = () => {
         background: '#000000',
         marginTop: 'auto',
       }}
+      className="footer"
     >
       <CssBaseline />
       <Box
