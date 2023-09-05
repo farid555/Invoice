@@ -19,7 +19,7 @@ const cloudinaryUploader = async function uploadToCloudinary(localFilePath) {
       fs.unlinkSync(localFilePath);
 
       return {
-        message: 'Success',
+        message: 'Success',2
         url: result.url,
       };
     })

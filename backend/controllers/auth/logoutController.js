@@ -29,7 +29,7 @@ const logoutUser = asyncHandler(async (req, res) => {
   existingUser.refreshToken = existingUser.refreshToken.filter(
     (reft) => reft != refreshToken
   );
-  await existingUser.save();
+  existingUser.save();
 
   res.clearCookie('jwt', {
     httpOnly: true,
