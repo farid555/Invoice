@@ -25,4 +25,7 @@ user:
 volume:
 	docker volume inspect mern-invoice_mongodb
 
+docker compose config:
+	docker compose -f local.yml config
+
 
