@@ -20,7 +20,6 @@ import PasswordResetPage from './features/auth/pages/PasswordResetPage';
 import PasswordResetRequestPage from './features/auth/pages/PasswordResetRequestPage';
 import { ROLES } from './config/roles';
 import UsersList from './features/users/pages/UsersListPage';
-import DashboardPage from './pages/DashboardPage';
 import AuthRequired from './components/AuthRequired';
 import EditProfileForm from './features/users/pages/EditProfileForm';
 import ProfilePage from './features/users/pages/ProfilePage';
@@ -31,6 +30,8 @@ import CustomerCreateForm from './features/customers/pages/CustomerCreateForm';
 import DocCreateEditForm from './features/documents/pages/DocCreateEditForm';
 import DocumentsPage from './features/documents/pages/DocumentsPage';
 import SingleDocumentPage from './features/documents/pages/SingleDocumentPage';
+import DashboardPage from "./features/dashboard/pages/DashboardPage"
+
 
 const App = () => {
   useTitle('MERN Invoice - Home');
@@ -55,7 +56,6 @@ const App = () => {
         <Route path="auth/reset_password" element={<PasswordResetPage />} />
         {/*Private Route* - Users*/}
         <Route element={<AuthRequired allowedRoles={[ROLES.User]} />}>
-          <Route path="dashboard" element={<DashboardPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="edit-profile" element={<EditProfileForm />} />
           <Route path="customers" element={<CustomersPage />} />
@@ -69,6 +69,7 @@ const App = () => {
           <Route path="create-doc" element={<DocCreateEditForm />} />
           <Route path="edit-doc/:id" element={<DocCreateEditForm />} />
           <Route path="document/:id" element={<SingleDocumentPage />} />
+          <Route path="dashboard" element={<DashboardPage />} />
         </Route>
 
         {/*Private Route - Admin Users only*/}
